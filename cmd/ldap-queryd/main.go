@@ -27,6 +27,7 @@ func main() {
 
 	logger := logrus.New()
 
+	//TODO Log to event log IF non-interactive
 	logger.Out = os.Stdout
 	logger.Formatter = &logrus.JSONFormatter{}
 
@@ -67,7 +68,6 @@ func main() {
 
 	http.Handle("/", middlewareChain.ThenFunc(search(config.Directory, logger)))
 	http.Handle("/metrics", promhttp.Handler())
-	http.HandleFunc("/docs", viewDocs(logger))
 
 	logger.WithField("port", listeningPort).Debug("API server listening")
 

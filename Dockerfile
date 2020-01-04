@@ -15,7 +15,7 @@ LABEL maintainer="rokett@rokett.me"
 COPY --from=builder go/src/github.com/rokett/ldap-query/ldap-query /
 
 # Dynamic expose port
-EXPOSE 1100
+EXPOSE 9999
 
 # TODO Arguments
-ENTRYPOINT ["./ldap-query"]
+ENTRYPOINT ["./ldap-queryd"]
