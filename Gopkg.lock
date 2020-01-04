@@ -10,6 +10,14 @@
   version = "v0.3.1"
 
 [[projects]]
+  branch = "master"
+  digest = "1:f7668db9f49a7a36df1ca570791b496e92fa386c7a89b4709c9ca407a07beadc"
+  name = "github.com/Freman/eventloghook"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "e4d803b6b48b749aab8c4a716e0b76c2aa616588"
+
+[[projects]]
   digest = "1:d6afaeed1502aa28e80a4ed0981d570ad91b2579193404256ce672ed0a609e0d"
   name = "github.com/beorn7/perks"
   packages = ["quantile"]
@@ -53,10 +61,9 @@
   version = "v0.3.0"
 
 [[projects]]
-  digest = "1:350d9240e5632570750704089874185dd6c01ee3a04e4f5a720eb7d5cd663633"
+  digest = "1:d9bb9cf750ff72f31e893a47a18ac0c802fa3abcd66befe1422069d67eeba069"
   name = "github.com/gobuffalo/packr"
   packages = [
-    ".",
     "v2",
     "v2/file",
     "v2/file/resolver",
@@ -119,6 +126,14 @@
   pruneopts = "UT"
   revision = "c12348ce28de40eed0136aa2b644d0ee0650e56c"
   version = "v1.0.1"
+
+[[projects]]
+  digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
+  version = "v0.8.1"
 
 [[projects]]
   digest = "1:eb8832cdc904ff89b70c524ab305bf3384c6411f9df6b9f2a41fddc2220e6613"
@@ -187,46 +202,6 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5770d1e0b23e672acbd347a51fda48c6df176a15c71bdd374202c87267b68390"
-  name = "gitlab.com/golang-commonmark/html"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "a22733972181c63ecab285f900bb2917f3ba4e88"
-
-[[projects]]
-  branch = "master"
-  digest = "1:877e38a750308ceaf321e51b26aae40efd8e1f0ed04cdca3bdec0dbfb71a27e9"
-  name = "gitlab.com/golang-commonmark/linkify"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "a0c2df6c8f82281d2785a0974d1f02656b45fff7"
-
-[[projects]]
-  branch = "master"
-  digest = "1:95fad0840695770220c346f935f0e4a1944d3a7d659e82dbb2b4d8ac20901a82"
-  name = "gitlab.com/golang-commonmark/markdown"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "91b5b3c99c19293be22fcab0a775ff39ee14387f"
-
-[[projects]]
-  branch = "master"
-  digest = "1:288514e6ad5beaa02ef8821be84f5a19438022858e81c8d04f849ba9b4a6e68c"
-  name = "gitlab.com/golang-commonmark/mdurl"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "932350d1cb841423f436264e83e4f0bdbc798f67"
-
-[[projects]]
-  branch = "master"
-  digest = "1:b8bdb01cb408564761513d9ce3c07cfd8463d1e10c9f12e2d74cd90883912af5"
-  name = "gitlab.com/golang-commonmark/puny"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "9f83538fa04f50589f934c5ad2a18750264c8276"
-
-[[projects]]
-  branch = "master"
   digest = "1:bbe51412d9915d64ffaa96b51d409e070665efc5194fcf145c4a27d4133107a4"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
@@ -235,37 +210,18 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:dab7f636e7fc0e8a5b61ca4cd3f13107717c6147fd25e9010d930f001e485ec3"
+  digest = "1:7c09304bb672c42832b9aa07bd3128555398e30c18e2bdf8fb4cab8266526c5c"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
+    "windows/registry",
+    "windows/svc",
+    "windows/svc/debug",
+    "windows/svc/eventlog",
   ]
   pruneopts = "UT"
   revision = "c96a22e43c9c1088b5e506727c975511357d9f68"
-
-[[projects]]
-  digest = "1:d0be7f16ff0d2181f2cae62e02e8a274383f9c26497fb6f5bd56730776e3ec1e"
-  name = "golang.org/x/text"
-  packages = [
-    "collate",
-    "collate/build",
-    "internal/colltab",
-    "internal/gen",
-    "internal/language",
-    "internal/language/compact",
-    "internal/tag",
-    "internal/triegen",
-    "internal/ucd",
-    "language",
-    "transform",
-    "unicode/cldr",
-    "unicode/norm",
-    "unicode/rangetable",
-  ]
-  pruneopts = "UT"
-  revision = "342b2e1fbaa52c93f31447ad2c6abc048c63e475"
-  version = "v0.3.2"
 
 [[projects]]
   digest = "1:c74cd11ed76b71a8f58d4aa34da3965d663f5e2862621eb2390026e4175bc205"
@@ -280,15 +236,17 @@
   analyzer-version = 1
   input-imports = [
     "github.com/BurntSushi/toml",
-    "github.com/gobuffalo/packr",
+    "github.com/Freman/eventloghook",
     "github.com/gobuffalo/packr/v2",
     "github.com/gofrs/uuid",
     "github.com/justinas/alice",
+    "github.com/pkg/errors",
     "github.com/prometheus/client_golang/prometheus",
     "github.com/prometheus/client_golang/prometheus/promauto",
     "github.com/prometheus/client_golang/prometheus/promhttp",
     "github.com/sirupsen/logrus",
-    "gitlab.com/golang-commonmark/markdown",
+    "golang.org/x/sys/windows/svc",
+    "golang.org/x/sys/windows/svc/eventlog",
     "gopkg.in/ldap.v3",
   ]
   solver-name = "gps-cdcl"
