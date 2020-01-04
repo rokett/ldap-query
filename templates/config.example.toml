@@ -1,0 +1,18 @@
+allowed_sources = [
+    "192.168.1.1",
+]
+
+[[ldap]]
+    hosts = [
+        "x.x.x.x",
+    ]
+    bind_dn = "CN=xx,CN=xx,DC=xx,DC=xx,DC=xx"
+    bind_password = "xxxxxx"
+    # Default port is 389 or 636 if use_ssl = true
+    port = 389
+    # Set to true if ldap server supports TLS
+    use_ssl = false
+    # Set to true if connect ldap server with STARTTLS pattern (create connection in insecure, then upgrade to secure connection with TLS)
+    start_tls = false
+    # Set to true if you want to skip ssl cert validation
+    ssl_skip_verify = false
