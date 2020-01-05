@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"net"
 	"net/http"
 	"os"
@@ -20,13 +21,25 @@ type adQueryContextKeyType string
 const clientIPCtxKey adQueryContextKeyType = "client_ip"
 const traceIDCtxKey adQueryContextKeyType = "trace_id"
 
+var (
+	app     = "LDAP-Query"
+	version string
+	build   string
+)
+
 func main() {
 	var (
 		serverPort = flag.Int("server-port", 9999, "API Gateway server port")
+		versionFlg = flag.Bool("version", false, "Display application version")
 		debug      = flag.Bool("debug", false, "Enable debugging?")
 	)
 
 	flag.Parse()
+
+	if *versionFlg {
+		fmt.Printf("%s v%s build %s\n", app, version, build)
+		os.Exit(0)
+	}
 
 	logger := logrus.New()
 

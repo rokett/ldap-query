@@ -8,10 +8,11 @@ The main configuration is done in the config file.  See that file, `config.toml`
 
 Other configuration is done via flags.
 
-| Flag        | Description                       | Default Value |
-| ----------- | --------------------------------- | ------------- |
-| bind_port   | Port to bind the API endpoint to  | 9999          |
-| debug       | Enable debug logging              | false         |
+| Flag        | Description                              | Default Value |
+| ----------- | ---------------------------------------- | ------------- |
+| bind_port   | Port to bind the API endpoint to         | 9999          |
+| version     | Display the application version and quit | false         |
+| debug       | Enable debug logging                     | false         |
 
 Once running you can run any query you want by sending a `POST` request to the `/search` endpoint with your query as the JSON payload.  Here is an example:
 
@@ -34,7 +35,6 @@ The `filter`, `base`, and `attributes` parameters are **required**.  The `scope`
 
 No validation is carried out on the filter or attribute names, so if you don't get the results you expect make sure you ensure they are correct.
 
-
 ### Metrics
 Application metrics are exported in [Prometheus](https://prometheus.io/) format to the `/metrics` endpoint.
 
@@ -48,7 +48,7 @@ When running interactively, logs will be sent to `Stdout`.
 Logs will be sent to `Stdout`.
 
 ## Running in production
-It is best to setup ldap-query to run as a service.
+It is best to setup `ldap-query` to run as a service.
 
 ### Windows
 You can create a service from an executable using a few different methods:

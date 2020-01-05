@@ -1,13 +1,12 @@
 @echo off
 SETLOCAL
 
-set APPNAME=LDAP-Query
 set VERSION=1.0.0
 
 REM Set build number from git commit hash
 for /f %%i in ('git rev-parse HEAD') do set BUILD=%%i
 
-set LDFLAGS=-ldflags "-X main.app=%APPNAME% -X main.version=%VERSION% -X main.build=%BUILD% -s -w -extldflags '-static'"
+set LDFLAGS=-ldflags "-X main.version=%VERSION% -X main.build=%BUILD% -s -w -extldflags '-static'"
 
 goto build
 
