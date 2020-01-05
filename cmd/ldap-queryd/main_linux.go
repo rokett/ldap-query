@@ -65,14 +65,15 @@ func main() {
 		traceID(logger), // Generate Trace ID and store in context
 	)
 
-	// TODO Use custom servemux
+	// Using a locally scoped ServerMux to ensure that the only routes that can be registered are our own
+	mux := http.NewServeMux()
 
-	http.Handle("/", middlewareChain.ThenFunc(search(config.Directory, logger)))
-	http.Handle("/metrics", promhttp.Handler())
+	mux.Handle("/", middlewareChain.ThenFunc(search(config.Directory, logger)))
+	mux.Handle("/metrics", promhttp.Handler())
 
 	logger.WithField("port", listeningPort).Debug("API server listening")
 
-	err = http.Serve(server, nil)
+	err = http.Serve(server, mux)
 	if err != nil {
 		logger.WithField("error", err).Fatal("unable to start server")
 	}
