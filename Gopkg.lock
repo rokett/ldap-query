@@ -218,7 +218,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f208845493130bc1db5a7a766e1b2a96e50ec18ea07074d450833f587309a8a7"
+  digest = "1:90d29a2adfb6c22950d7fff6f6dd85126dcd2fa32b4d9ab5e55f31b7fc659214"
   name = "golang.org/x/sys"
   packages = [
     "unix",
@@ -230,7 +230,7 @@
     "windows/svc/mgr",
   ]
   pruneopts = "UT"
-  revision = "c96a22e43c9c1088b5e506727c975511357d9f68"
+  revision = "a1369afcdac740082c63165b07ec83b531884be2"
 
 [[projects]]
   digest = "1:c74cd11ed76b71a8f58d4aa34da3965d663f5e2862621eb2390026e4175bc205"
@@ -255,7 +255,6 @@
     "github.com/prometheus/client_golang/prometheus/promauto",
     "github.com/prometheus/client_golang/prometheus/promhttp",
     "github.com/sirupsen/logrus",
-    "golang.org/x/sys/windows/svc",
     "golang.org/x/sys/windows/svc/eventlog",
     "gopkg.in/ldap.v3",
   ]

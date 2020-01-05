@@ -30,6 +30,10 @@
   version = "0.3.1"
 
 [[constraint]]
+  branch = "master"
+  name = "github.com/Freman/eventloghook"
+
+[[constraint]]
   name = "github.com/gobuffalo/packr"
   version = "2.7.1"
 
@@ -42,6 +46,14 @@
   version = "1.2.0"
 
 [[constraint]]
+  name = "github.com/kardianos/service"
+  version = "1.0.0"
+
+[[constraint]]
+  name = "github.com/pkg/errors"
+  version = "0.8.1"
+
+[[constraint]]
   name = "github.com/prometheus/client_golang"
   version = "1.1.0"
 
@@ -51,20 +63,12 @@
 
 [[constraint]]
   branch = "master"
-  name = "gitlab.com/golang-commonmark/markdown"
-
-[prune]
-  go-tests = true
-  unused-packages = true
+  name = "golang.org/x/sys"
 
 [[constraint]]
   name = "gopkg.in/ldap.v3"
   version = "3.1.5"
 
-[[constraint]]
-  branch = "master"
-  name = "github.com/Freman/eventloghook"
-
-[[constraint]]
-  name = "github.com/kardianos/service"
-  version = "1.0.0"
+[prune]
+  go-tests = true
+  unused-packages = true
