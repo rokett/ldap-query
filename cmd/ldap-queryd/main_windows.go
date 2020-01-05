@@ -61,15 +61,34 @@ func main() {
 		}).Fatal("unable to determine if process is running interactively")
 	}
 	if interactive == false {
-		//TODO Check this stuff
-		elog, err := eventlog.Open("Service Name")
-		if err != nil {
-			//TODO Handle error
-			panic(err)
-		}
-		defer elog.Close()
+		var el *eventlog.Log
 
-		logger.Hooks.Add(eventloghook.NewHook(elog))
+		el, err := eventlog.Open(app)
+		if err != nil {
+			logger.WithFields(logrus.Fields{
+				"function": "main",
+				"error":    err,
+			}).Error("unable to open Event Log")
+
+			err := eventlog.InstallAsEventCreate(app, eventlog.Error|eventlog.Warning|eventlog.Info)
+			if err != nil {
+				logger.WithFields(logrus.Fields{
+					"function": "main",
+					"error":    err,
+				}).Fatal("unable to create event source")
+			}
+
+			el, err = eventlog.Open(app)
+			if err != nil {
+				logger.WithFields(logrus.Fields{
+					"function": "main",
+					"error":    err,
+				}).Fatal("unable to open event log after creating event source")
+			}
+		}
+		defer el.Close()
+
+		logger.Hooks.Add(eventloghook.NewHook(el))
 	}
 
 	config := loadConfig(logger)
