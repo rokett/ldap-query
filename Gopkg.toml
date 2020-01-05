@@ -64,3 +64,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/Freman/eventloghook"
+
+[[constraint]]
+  name = "github.com/kardianos/service"
+  version = "1.0.0"

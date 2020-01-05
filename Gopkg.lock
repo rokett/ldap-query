@@ -112,6 +112,14 @@
   version = "v1.2.0"
 
 [[projects]]
+  digest = "1:8f18653ebbb51d8223ce56f8834f62bb1cb11d59d3ba4f661cc8dc69a059ccc4"
+  name = "github.com/kardianos/service"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "56787a3ea05e9b262708192e7ce3b500aba73561"
+  version = "v1.0.0"
+
+[[projects]]
   digest = "1:31e761d97c76151dde79e9d28964a812c46efc5baee4085b86f68f0c654450de"
   name = "github.com/konsorten/go-windows-terminal-sequences"
   packages = ["."]
@@ -210,7 +218,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:7c09304bb672c42832b9aa07bd3128555398e30c18e2bdf8fb4cab8266526c5c"
+  digest = "1:f208845493130bc1db5a7a766e1b2a96e50ec18ea07074d450833f587309a8a7"
   name = "golang.org/x/sys"
   packages = [
     "unix",
@@ -219,6 +227,7 @@
     "windows/svc",
     "windows/svc/debug",
     "windows/svc/eventlog",
+    "windows/svc/mgr",
   ]
   pruneopts = "UT"
   revision = "c96a22e43c9c1088b5e506727c975511357d9f68"
@@ -240,6 +249,7 @@
     "github.com/gobuffalo/packr/v2",
     "github.com/gofrs/uuid",
     "github.com/justinas/alice",
+    "github.com/kardianos/service",
     "github.com/pkg/errors",
     "github.com/prometheus/client_golang/prometheus",
     "github.com/prometheus/client_golang/prometheus/promauto",

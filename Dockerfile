@@ -17,5 +17,4 @@ COPY --from=builder go/src/github.com/rokett/ldap-query/ldap-query /
 # Dynamic expose port
 EXPOSE 9999
 
-# TODO Arguments
 ENTRYPOINT ["./ldap-queryd"]

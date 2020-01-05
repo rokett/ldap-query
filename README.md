@@ -51,31 +51,17 @@ Logs will be sent to `Stdout`.
 It is best to setup `ldap-query` to run as a service.
 
 ### Windows
-You can create a service from an executable using a few different methods:
+You can install the service like so:
 
-- **`sc.exe`**
+```
+ldap-queryd.exe --service install
+```
 
-  This is native to Windows and has the most support on more versions of Windows than any other option.  Awkward to do programmatically though should you want to.
+Uninstall like so:
 
-  The example below will create a service called `ldap-query` and set it to an `Automatic (Delayed)` start.
-
-  ```
-  sc create ldap-query binPath= C:\path\to\ldap-queryd.exe DisplayName= LDAP-Query start= delayed-auto
-  ```
-
-- **PowerShell**
-
-  You can use the `New-Service` cmdlet.  This requires a minimum of PowerShell 6 and makes doing things programmatically really easy.
-
-  The example below will create a service called `ldap-query` and set it to an `Automatic (Delayed)` start.
-
-  ```powershell
-  New-Service -Name "ldap-query" -BinaryPathName "C:\path\to\ldap-queryd.exe" -DisplayName "LDAP Query" -StartupType "AutomaticDelayedStart" -Description "REST API gateway for querying AD"
-  ```
-
-- **[NSSM](https://nssm.cc/)**
-  NSSM provides a GUI to do what `sc.exe` does, plus a little more.
-
+```
+ldap-queryd.exe --service uninstall
+```
 
 You'll probably want to ensure that the service is set to restart on failures, so check those settings.
 
