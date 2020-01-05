@@ -52,7 +52,7 @@ func main() {
 		logger.Level = logrus.InfoLevel
 	}
 
-	// If the application is NOT running interactively, then it is running as a service and we want send logs to the Event Log.
+	// If the application is NOT running interactively, then it is running as a service and we want to send logs to the Event Log.
 	interactive, err := svc.IsAnInteractiveSession()
 	if err != nil {
 		logger.WithFields(logrus.Fields{
