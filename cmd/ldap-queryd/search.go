@@ -226,6 +226,11 @@ func search(directory directory, logger *logrus.Logger) http.HandlerFunc {
 		duration := time.Since(start)
 		requestDuration.WithLabelValues(strconv.Itoa(http.StatusOK)).Observe(duration.Seconds())
 
+		if len(objects) == 0 {
+			APIResponse.Send(http.StatusNotFound, w)
+			return
+		}
+
 		APIResponse.Result = objects
 		APIResponse.Send(http.StatusOK, w)
 	})
