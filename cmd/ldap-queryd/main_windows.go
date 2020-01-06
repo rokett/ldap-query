@@ -187,7 +187,7 @@ func (p *program) run(svc service.Service) {
 	p.logger.WithFields(logrus.Fields{
 		"function": "run",
 		"port":     listeningPort,
-	}).Fatal("API server listening")
+	}).Debug("API server listening")
 
 	err = http.Serve(server, mux)
 	if err != nil {
