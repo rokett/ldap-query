@@ -11,8 +11,14 @@ import (
 )
 
 type config struct {
+	Server         server    `toml:"server"`
 	AllowedSources []string  `toml:"allowed_sources"`
 	Directory      directory `toml:"directory"`
+}
+
+type server struct {
+	Port  int  `toml:"port"`
+	Debug bool `toml:"debug"`
 }
 
 type directory struct {
@@ -25,7 +31,7 @@ type directory struct {
 	SSLSkipVerify bool     `toml:"ssl_skip_verify"`
 }
 
-func loadConfig(logger *logrus.Logger) config {
+func loadConfig(logger *logrus.Entry) config {
 	var (
 		cfgFile = "config.toml"
 		config  config

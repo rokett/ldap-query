@@ -6,7 +6,6 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/Freman/eventloghook"
 	"github.com/justinas/alice"
@@ -27,9 +26,7 @@ var (
 	build       string
 	serviceDesc = "REST API gateway for running queries against LDAP directory"
 
-	serverPort        = flag.Int("server-port", 9999, "API Gateway server port")
 	versionFlg        = flag.Bool("version", false, "Display application version")
-	debug             = flag.Bool("debug", false, "Enable debugging?")
 	winServiceCommand = flag.String("service", "", "Manage Windows services: install, uninstall, start, stop")
 )
 
@@ -51,12 +48,6 @@ func main() {
 
 	logrusLogger.Out = os.Stdout
 	logrusLogger.Formatter = &logrus.JSONFormatter{}
-
-	if *debug {
-		logrusLogger.Level = logrus.DebugLevel
-	} else {
-		logrusLogger.Level = logrus.InfoLevel
-	}
 
 	logger := logrusLogger.WithFields(logrus.Fields{
 		"version": version,
@@ -158,6 +149,12 @@ func (p *program) run(svc service.Service) {
 
 	config := loadConfig(p.logger)
 
+	if config.Server.Debug {
+		p.logger.Logger.Level = logrus.DebugLevel
+	} else {
+		p.logger.Logger.Level = logrus.InfoLevel
+	}
+
 	// Need to ensure that we can bind to the directory before we bother listening for any requests.
 	ldapConn, err := bindToDC(config.Directory, p.logger)
 	if err != nil {
@@ -168,7 +165,7 @@ func (p *program) run(svc service.Service) {
 	}
 	ldapConn.Close()
 
-	listeningPort := ":" + strconv.Itoa(*serverPort)
+	listeningPort := fmt.Sprintf(":%d", config.Server.Port)
 	server, err := net.Listen("tcp", listeningPort)
 	if err != nil {
 		p.logger.WithFields(logrus.Fields{

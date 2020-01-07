@@ -2,10 +2,10 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"net"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/justinas/alice"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -17,24 +17,26 @@ type adQueryContextKeyType string
 const clientIPCtxKey adQueryContextKeyType = "client_ip"
 const traceIDCtxKey adQueryContextKeyType = "trace_id"
 
-func main() {
-	var (
-		serverPort = flag.Int("server-port", 9999, "API Gateway server port")
-		debug      = flag.Bool("debug", false, "Enable debugging?")
-	)
+var (
+	app     = "LDAP-Query"
+	version string
+	build   string
 
+	versionFlg = flag.Bool("version", false, "Display application version")
+)
+
+func main() {
 	flag.Parse()
+
+	if *versionFlg {
+		fmt.Printf("%s v%s build %s\n", app, version, build)
+		os.Exit(0)
+	}
 
 	logrusLogger := logrus.New()
 
 	logrusLogger.Out = os.Stdout
 	logrusLogger.Formatter = &logrus.JSONFormatter{}
-
-	if *debug {
-		logrusLogger.Level = logrus.DebugLevel
-	} else {
-		logrusLogger.Level = logrus.InfoLevel
-	}
 
 	logger := logrusLogger.WithFields(logrus.Fields{
 		"version": version,
@@ -42,6 +44,12 @@ func main() {
 	})
 
 	config := loadConfig(logger)
+
+	if config.Server.Debug {
+		logger.Level = logrus.DebugLevel
+	} else {
+		logger.Level = logrus.InfoLevel
+	}
 
 	// Need to ensure that we can bind to the directory before we bother listening for any requests.
 	ldapConn, err := bindToDC(config.Directory, logger)
@@ -53,7 +61,7 @@ func main() {
 	}
 	ldapConn.Close()
 
-	listeningPort := ":" + strconv.Itoa(*serverPort)
+	listeningPort := fmt.Sprintf(":%d", config.Server.Port)
 	server, err := net.Listen("tcp", listeningPort)
 	if err != nil {
 		logger.WithFields(logrus.Fields{
