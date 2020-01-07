@@ -11,6 +11,11 @@ set LDFLAGS=-ldflags "-X main.version=%VERSION% -X main.build=%BUILD% -s -w -ext
 goto build
 
 :build
+    REM echo "=== Building Docker image ==="
+    REM docker build -t rokett/ldap-query:latest -t rokett/ldap-query:v%VERSION% .
+    REM docker push rokett/ldap-query:v%VERSION%
+    REM docker push rokett/ldap-query:latest
+
     set GOARCH=amd64
 
     %GOPATH%\bin\packr2
