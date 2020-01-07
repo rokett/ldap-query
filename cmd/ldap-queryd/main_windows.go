@@ -37,6 +37,9 @@ type program struct {
 	logger *logrus.Logger
 }
 
+//TODO Tracing
+//TODO Include app version in logs
+
 func main() {
 	flag.Parse()
 

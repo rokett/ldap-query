@@ -4,15 +4,7 @@ LDAP-Query is a service which provides a REST API gateway to make queries agains
 It has specifically been tested against Active Directory, but there shouldn't be anything which is specific to AD so there is no obvious reason why it wouldn't work against other LDAP directories.
 
 ## Usage
-The main configuration is done in the config file.  See that file, `config.toml`, for an explanation about how to configure it.  After changing the config file, the application will need to be restarted.
-
-Other configuration is done via flags.
-
-| Flag        | Description                              | Default Value |
-| ----------- | ---------------------------------------- | ------------- |
-| bind_port   | Port to bind the API endpoint to         | 9999          |
-| version     | Display the application version and quit | false         |
-| debug       | Enable debug logging                     | false         |
+Configuration is done in the config file. `config.toml`.  See that file for an explanation about how to configure it.  After changing the config file, the application will need to be restarted.
 
 Once running you can run any query you want by sending a `POST` request to the `/search` endpoint with your query as the JSON payload.  Here is an example:
 
@@ -34,6 +26,8 @@ POST /search
 The `filter`, `base`, and `attributes` parameters are **required**.  The `scope` parameter is not required and will default to `base`.
 
 No validation is carried out on the filter or attribute names, so if you don't get the results you expect make sure you ensure they are correct.
+
+To display the application version run the application with the `--version` flag.
 
 ### Metrics
 Application metrics are exported in [Prometheus](https://prometheus.io/) format to the `/metrics` endpoint.

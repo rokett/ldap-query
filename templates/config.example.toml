@@ -1,18 +1,31 @@
+[server]
+    port = 9999
+    debug = false
+
+# Only requests from sources with IPs listed here will be accepted.
+# List any sources that need to be able to make LDAP queries.
 allowed_sources = [
     "192.168.1.1",
 ]
 
 [directory]
+    # List as many hosts to query as you want.  The hosts wll be randomised on each request.
     hosts = [
         "x.x.x.x",
     ]
+
+    # The account you use to bind to the directory does not need any special permissions other than the ability to make queries.
     bind_dn = "CN=xx,CN=xx,DC=xx,DC=xx,DC=xx"
     bind_password = "xxxxxx"
-    # Default port is 389 or 636 if use_ssl = true
+
+    # Default port is 389 or 636 if use_ssl = true.  If your directory is running on a different port you can change it here.
     port = 389
-    # Set to true if ldap server supports TLS
+
+    # Set to true if LDAP host supports TLS
     use_ssl = false
-    # Set to true if connect ldap server with STARTTLS pattern (create connection in insecure, then upgrade to secure connection with TLS)
+
+    # Set to true if you wnt to connect to the LDAP host with STARTTLS pattern (create connection in insecure, then upgrade to secure connection with TLS)
     start_tls = false
-    # Set to true if you want to skip ssl cert validation
+
+    # Set to true if you want to skip SSL cert validation
     ssl_skip_verify = false
