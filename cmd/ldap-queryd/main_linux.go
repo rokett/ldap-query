@@ -25,16 +25,21 @@ func main() {
 
 	flag.Parse()
 
-	logger := logrus.New()
+	logrusLogger := logrus.New()
 
-	logger.Out = os.Stdout
-	logger.Formatter = &logrus.JSONFormatter{}
+	logrusLogger.Out = os.Stdout
+	logrusLogger.Formatter = &logrus.JSONFormatter{}
 
 	if *debug {
-		logger.Level = logrus.DebugLevel
+		logrusLogger.Level = logrus.DebugLevel
 	} else {
-		logger.Level = logrus.InfoLevel
+		logrusLogger.Level = logrus.InfoLevel
 	}
+
+	logger := logrusLogger.WithFields(logrus.Fields{
+		"version": version,
+		"build":   build,
+	})
 
 	config := loadConfig(logger)
 

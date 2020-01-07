@@ -34,11 +34,10 @@ var (
 )
 
 type program struct {
-	logger *logrus.Logger
+	logger *logrus.Entry
 }
 
 //TODO Tracing
-//TODO Include app version in logs
 
 func main() {
 	flag.Parse()
@@ -48,16 +47,21 @@ func main() {
 		os.Exit(0)
 	}
 
-	logger := logrus.New()
+	logrusLogger := logrus.New()
 
-	logger.Out = os.Stdout
-	logger.Formatter = &logrus.JSONFormatter{}
+	logrusLogger.Out = os.Stdout
+	logrusLogger.Formatter = &logrus.JSONFormatter{}
 
 	if *debug {
-		logger.Level = logrus.DebugLevel
+		logrusLogger.Level = logrus.DebugLevel
 	} else {
-		logger.Level = logrus.InfoLevel
+		logrusLogger.Level = logrus.InfoLevel
 	}
+
+	logger := logrusLogger.WithFields(logrus.Fields{
+		"version": version,
+		"build":   build,
+	})
 
 	svcConfig := &service.Config{
 		Name:        app,
@@ -149,7 +153,7 @@ func (p *program) run(svc service.Service) {
 		}
 		defer el.Close()
 
-		p.logger.Hooks.Add(eventloghook.NewHook(el))
+		p.logger.Logger.Hooks.Add(eventloghook.NewHook(el))
 	}
 
 	config := loadConfig(p.logger)

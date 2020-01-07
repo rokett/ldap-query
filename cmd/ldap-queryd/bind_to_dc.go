@@ -11,7 +11,7 @@ import (
 )
 
 //TODO Allow TLS bind
-func bindToDC(directory directory, logger *logrus.Logger) (*ldap.Conn, error) {
+func bindToDC(directory directory, logger *logrus.Entry) (*ldap.Conn, error) {
 	var ldapConn *ldap.Conn
 
 	// Randomise the selection of hosts to allow for rudimentary load balancing of requests

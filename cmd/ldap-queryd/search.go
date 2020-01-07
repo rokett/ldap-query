@@ -44,7 +44,7 @@ var (
 	)
 )
 
-func search(directory directory, logger *logrus.Logger) http.HandlerFunc {
+func search(directory directory, logger *logrus.Entry) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// The traceID is included in every log entry, and in HTTP responses, to allow for correlation of logs
 		traceID := r.Context().Value(traceIDCtxKey).(string)

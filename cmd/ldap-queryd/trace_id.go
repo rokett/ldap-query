@@ -9,7 +9,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func traceID(logger *logrus.Logger) alice.Constructor {
+func traceID(logger *logrus.Entry) alice.Constructor {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			traceID, err := uuid.NewV4()
