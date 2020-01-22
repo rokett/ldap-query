@@ -12,13 +12,13 @@ import (
 
 type config struct {
 	Server         server    `toml:"server"`
-	AllowedSources []string  `toml:"allowed_sources"`
 	Directory      directory `toml:"directory"`
 }
 
 type server struct {
-	Port  int  `toml:"port"`
-	Debug bool `toml:"debug"`
+	Port           int      `toml:"port"`
+	Debug          bool     `toml:"debug"`
+	AllowedSources []string `toml:"allowed_sources"`
 }
 
 type directory struct {

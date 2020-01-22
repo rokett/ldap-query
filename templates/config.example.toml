@@ -2,11 +2,11 @@
     port = 9999
     debug = false
 
-# Only requests from sources with IPs listed here will be accepted.
-# List any sources that need to be able to make LDAP queries.
-allowed_sources = [
-    "192.168.1.1",
-]
+    # Only requests from sources with IPs listed here will be accepted.
+    # List any sources that need to be able to make LDAP queries.
+    allowed_sources = [
+        "192.168.1.1",
+    ]
 
 [directory]
     # List as many hosts to query as you want.  The hosts wll be randomised on each request.

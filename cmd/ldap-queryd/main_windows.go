@@ -178,7 +178,7 @@ func (p *program) run(svc service.Service) {
 	middlewareChain := alice.New(
 		checkMethodIsPOST, // Ensure method is allowed
 		getClientIP,       // Store original client IP address in context
-		checkRequestSource(config.AllowedSources, p.logger), // Ensure source IP is allowed to query
+		checkRequestSource(config.Server.AllowedSources, p.logger), // Ensure source IP is allowed to query
 		traceID(p.logger), // Generate Trace ID and store in context
 	)
 
