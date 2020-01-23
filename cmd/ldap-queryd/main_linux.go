@@ -74,7 +74,7 @@ func main() {
 	middlewareChain := alice.New(
 		checkMethodIsPOST, // Ensure method is allowed
 		getClientIP,       // Store original client IP address in context
-		checkRequestSource(config.AllowedSources, logger), // Ensure source IP is allowed to query
+		checkRequestSource(config.Server.AllowedSources, logger), // Ensure source IP is allowed to query
 		traceID(logger), // Generate Trace ID and store in context
 	)
 
