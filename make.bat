@@ -18,15 +18,11 @@ goto build
 
     set GOARCH=amd64
 
-    %GOPATH%\bin\packr2
-
     go build %LDFLAGS% .\cmd\ldap-queryd
 
     goto :clean
 
 :clean
-    %GOPATH%\bin\packr2 clean
-
     set VERSION=
     set BUILD=
     set LDFLAGS=

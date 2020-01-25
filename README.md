@@ -4,7 +4,25 @@ LDAP-Query is a service which provides a REST API gateway to make queries agains
 It has specifically been tested against Active Directory, but there shouldn't be anything which is specific to AD so there is no obvious reason why it wouldn't work against other LDAP directories.
 
 ## Usage
-Configuration is done in the config file, `config.toml`.  See that file for an explanation about how to configure it.  After changing the config file, the application will need to be restarted.
+Configuration is passed via flags.  If you need to query multiple domains, just run multiple instances of the application; remember to change the port that the application binds to.
+
+| Flag              | Description                                                                                                  | Default Value |
+| ----------------- | ------------------------------------------------------------------------------------------------------------ | ------------- |
+| port              | Port the application listens on                                                                              | 9999          |
+| allowed_sources   | Comma separated list of IPs to accept requests from                                                          | none          |
+| directory_hosts   | Comma separated list of LDAP hosts to query; these should all be in the same domain                          | 9280          |
+| directory_bind_dn | Full distinguished name of user account used to bind to the directory                                        | none          |
+| directory_bind_pw | Password for the user account used to bind to the directory.  This does NOT need to be a privileged account. | none          |
+| version           | Display application version information                                                                      | false         |
+| service           | Manage Windows services; install, uninstall, start, and stop                                                 | none          |
+| help              | Display help                                                                                                 | false         |
+| debug             | Enable debug logging                                                                                         | false         |
+
+````
+ldap-queryd.exe --allowed_sources "172.16.124.34" --directory_hosts "192.168.1.22,192.168.1.56" --directory_bind_dn "CN=account1,CN=Users,DC=my,DC=domain" --directory_bind_pw "complex_password"
+````
+
+A machine with IP 172.16.124.34 is allowed to send request to LDAP hosts at 192.168.1.22 and 192.168.1.56 on the default port of 389, using the account details provided.
 
 Once running you can run any query you want by sending a `POST` request to the `/search` endpoint with your query as the JSON payload.  Here is an example:
 
@@ -77,13 +95,10 @@ You can also run this as a container by pulling the image from https://hub.docke
 This project maintains dependencies under version control so building is really easy.
 
 1. `go get github.com/rokett/ldap-query`.
-2. Install [Packr v2](https://github.com/gobuffalo/packr/tree/master/v2); `go get -u github.com/gobuffalo/packr/v2/packr2`.
 
 You can now carry out development.
 
 To build the executable, just run `make` from the root of the repository.
-
-The first time you run the executable a template config file, `config.toml`, will be created alongside the executable.  Update the config file as needed, and then run the executable again.
 
 ## Dockerfile
 This Dockerfile will create a container that will set the entrypoint as `/ldap-queryd` so you can just pass in the command line options mentioned above to the container without needing to call the executable

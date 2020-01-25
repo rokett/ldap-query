@@ -18,11 +18,19 @@ const clientIPCtxKey adQueryContextKeyType = "client_ip"
 const traceIDCtxKey adQueryContextKeyType = "trace_id"
 
 var (
-	app     = "LDAP-Query"
-	version string
-	build   string
+	app           = "LDAP-Query"
+	version       string
+	build         string
+	directoryPort = 389
 
-	versionFlg = flag.Bool("version", false, "Display application version")
+	versionFlg          = flag.Bool("version", false, "Display application version")
+	portFlg             = flag.Int("port", 9999, "Port to listen for requests on")
+	debugFlg            = flag.Bool("debug", false, "Enable debug logging")
+	allowedSourcesFlg   = flag.String("allowed_sources", "", "IPs for sources that need to be able to make queries")
+	directoryHostsFlg   = flag.String("directory_hosts", "", "LDAP hosts to query")
+	directoryBindDnFlg  = flag.String("directory_bind_dn", "", "DN of account used to bind to the directory")
+	directoryBindPwdFlg = flag.String("directory_bind_pw", "", "Password for account used to bind to the directory")
+	helpFlg             = flag.Bool("help", false, "Display application help")
 )
 
 func main() {
@@ -30,6 +38,11 @@ func main() {
 
 	if *versionFlg {
 		fmt.Printf("%s v%s build %s\n", app, version, build)
+		os.Exit(0)
+	}
+
+	if *helpFlg {
+		flag.PrintDefaults()
 		os.Exit(0)
 	}
 
@@ -43,7 +56,42 @@ func main() {
 		"build":   build,
 	})
 
-	config := loadConfig(logger)
+	missingFlags := false
+
+	if *allowedSourcesFlg == "" {
+		missingFlags = true
+		logger.WithFields(logrus.Fields{
+			"function": "run",
+		}).Error("The allowed_sources flag is required")
+	}
+
+	if *directoryHostsFlg == "" {
+		missingFlags = true
+		logger.WithFields(logrus.Fields{
+			"function": "run",
+		}).Error("The directory_hosts flag is required")
+	}
+
+	if *directoryBindDnFlg == "" {
+		missingFlags = true
+		logger.WithFields(logrus.Fields{
+			"function": "run",
+		}).Error("The directory_bind_dn flag is required")
+	}
+
+	if *directoryBindPwdFlg == "" {
+		missingFlags = true
+		logger.WithFields(logrus.Fields{
+			"function": "run",
+		}).Error("The directory_bind_pw flag is required")
+	}
+
+	if missingFlags {
+		flag.PrintDefaults()
+		os.Exit(1)
+	}
+
+	config := parseConfig(logger, *allowedSourcesFlg, *portFlg, *debugFlg, *directoryHostsFlg, *directoryBindDnFlg, *directoryBindPwdFlg, directoryPort)
 
 	if config.Server.Debug {
 		logger.Level = logrus.DebugLevel
