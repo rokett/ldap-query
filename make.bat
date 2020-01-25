@@ -1,7 +1,7 @@
 @echo off
 SETLOCAL
 
-set VERSION=1.0.0-rc.2
+set VERSION=1.0.0-rc.3
 
 REM Set build number from git commit hash
 for /f %%i in ('git rev-parse HEAD') do set BUILD=%%i
