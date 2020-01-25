@@ -26,8 +26,18 @@ var (
 	build       string
 	serviceDesc = "REST API gateway for running queries against LDAP directory"
 
-	versionFlg        = flag.Bool("version", false, "Display application version")
-	winServiceCommand = flag.String("service", "", "Manage Windows services: install, uninstall, start, stop")
+	versionFlg             = flag.Bool("version", false, "Display application version")
+	winServiceCommand      = flag.String("service", "", "Manage Windows services: install, uninstall, start, stop")
+	portFlg                = flag.String("port", 9999, "Port to listen for requests on")
+	debugFlg               = flag.Bool("debug", false, "Enable debug logging")
+	allowedSourcesFlg      = flag.String("allowed_sources", "", "IPs for sources that need to be able to make queries")
+	directoryHostsFlg      = flag.String("directory_hosts", "", "LDAP hosts to query")
+	directoryBindDnFlg     = flag.String("directory_bind_dn", "", "DN of account used to bind to the directory")
+	directoryBindPwdFlg    = flag.String("directory_bind_pw", "", "Password for account used to bind to the directory")
+	directoryPortFlg       = flag.Int("directory_port", 389, "port used to connect to the LDAP host")
+	directorySslFlg        = flag.Bool("directory_use_ssl", false, "Use TLS to connect to the LDAP host?")
+	directoryStartTLSFlg   = flag.Bool("directory_start_tls", false, "Upgrade connection to TLS")
+	directorySkipCertCheck = flag.Bool("directory_skip_cert_check", false, "Skip certificate validation on connection to secure LDAP host")
 )
 
 type program struct {
