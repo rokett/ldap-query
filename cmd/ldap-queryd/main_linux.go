@@ -129,6 +129,7 @@ func main() {
 	// Using a locally scoped ServerMux to ensure that the only routes that can be registered are our own
 	mux := http.NewServeMux()
 
+	mux.Handle("/status", status())
 	mux.Handle("/", middlewareChain.ThenFunc(search(config.Directory, logger)))
 	mux.Handle("/metrics", promhttp.Handler())
 
