@@ -1,6 +1,6 @@
 FROM golang:alpine as builder
 
-ENV VERSION="1.0.0-rc.3"
+ENV VERSION="1.0.0-rc.4"
 
 WORKDIR $GOPATH/src/github.com/rokett
 RUN \
