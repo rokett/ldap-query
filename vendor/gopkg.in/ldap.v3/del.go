@@ -1,9 +1,14 @@
+//
+// https://tools.ietf.org/html/rfc4511
+//
+// DelRequest ::= [APPLICATION 10] LDAPDN
+
 package ldap
 
 import (
 	"log"
 
-	ber "github.com/go-asn1-ber/asn1-ber"
+	ber "gopkg.in/asn1-ber.v1"
 )
 
 // DelRequest implements an LDAP deletion request

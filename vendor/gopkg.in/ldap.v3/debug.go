@@ -3,7 +3,7 @@ package ldap
 import (
 	"log"
 
-	ber "github.com/go-asn1-ber/asn1-ber"
+	ber "gopkg.in/asn1-ber.v1"
 )
 
 // debugging type

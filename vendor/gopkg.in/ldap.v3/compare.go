@@ -1,9 +1,28 @@
+// File contains Compare functionality
+//
+// https://tools.ietf.org/html/rfc4511
+//
+// CompareRequest ::= [APPLICATION 14] SEQUENCE {
+//              entry           LDAPDN,
+//              ava             AttributeValueAssertion }
+//
+// AttributeValueAssertion ::= SEQUENCE {
+//              attributeDesc   AttributeDescription,
+//              assertionValue  AssertionValue }
+//
+// AttributeDescription ::= LDAPString
+//                         -- Constrained to <attributedescription>
+//                         -- [RFC4512]
+//
+// AttributeValue ::= OCTET STRING
+//
+
 package ldap
 
 import (
 	"fmt"
 
-	ber "github.com/go-asn1-ber/asn1-ber"
+	ber "gopkg.in/asn1-ber.v1"
 )
 
 // CompareRequest represents an LDAP CompareRequest operation.

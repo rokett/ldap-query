@@ -1,9 +1,19 @@
+// Package ldap - moddn.go contains ModifyDN functionality
+//
+// https://tools.ietf.org/html/rfc4511
+// ModifyDNRequest ::= [APPLICATION 12] SEQUENCE {
+//      entry           LDAPDN,
+//      newrdn          RelativeLDAPDN,
+//      deleteoldrdn    BOOLEAN,
+//      newSuperior     [0] LDAPDN OPTIONAL }
+//
+//
 package ldap
 
 import (
 	"log"
 
-	ber "github.com/go-asn1-ber/asn1-ber"
+	ber "gopkg.in/asn1-ber.v1"
 )
 
 // ModifyDNRequest holds the request to modify a DN
