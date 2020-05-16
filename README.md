@@ -92,7 +92,7 @@ You can also run this as a container by pulling the image from https://hub.docke
 **TODO** - Document config file stuff for Docker
 
 ## How to setup local Dev environment
-This project maintains dependencies under version control so building is really easy.
+This project maintains dependencies under version control, using Go modules, so building is really easy.
 
 1. `go get github.com/rokett/ldap-query`.
 

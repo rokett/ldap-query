@@ -18,7 +18,7 @@ goto build
 
     set GOARCH=amd64
 
-    go build %LDFLAGS% .\cmd\ldap-queryd
+    go build -mod=vendor %LDFLAGS% .\cmd\ldap-queryd
 
     goto :clean
 

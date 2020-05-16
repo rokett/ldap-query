@@ -8,7 +8,7 @@ RUN \
     git clone --branch $VERSION --depth 1 https://github.com/rokett/ldap-query.git ldap-query && \
     cd ldap-query/cmd/ldap-queryd && \
     BUILD=$(git rev-list -1 HEAD) && \
-    CGO_ENABLED=0 GOOS=linux go build -a -ldflags "-X main.version=$VERSION -X main.build=$BUILD -s -w -extldflags '-static'" -o ldap-query
+    CGO_ENABLED=0 GOOS=linux go build -a -mod=vendor -ldflags "-X main.version=$VERSION -X main.build=$BUILD -s -w -extldflags '-static'" -o ldap-query
 
 FROM scratch
 LABEL maintainer="rokett@rokett.me"

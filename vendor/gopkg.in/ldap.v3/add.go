@@ -1,9 +1,18 @@
+//
+// https://tools.ietf.org/html/rfc4511
+//
+// AddRequest ::= [APPLICATION 8] SEQUENCE {
+//      entry           LDAPDN,
+//      attributes      AttributeList }
+//
+// AttributeList ::= SEQUENCE OF attribute Attribute
+
 package ldap
 
 import (
 	"log"
 
-	ber "github.com/go-asn1-ber/asn1-ber"
+	ber "gopkg.in/asn1-ber.v1"
 )
 
 // Attribute represents an LDAP attribute
