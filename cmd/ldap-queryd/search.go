@@ -189,10 +189,14 @@ func search(directory directory, logger *logrus.Entry) http.HandlerFunc {
 			queryError.WithLabelValues("search", strconv.Itoa(http.StatusInternalServerError), clientIP).Inc()
 
 			logger.WithFields(logrus.Fields{
-				"trace_id":  traceID,
-				"client_ip": clientIP,
-				"function":  "search",
-				"error":     err2,
+				"trace_id":   traceID,
+				"client_ip":  clientIP,
+				"function":   "search",
+				"error":      err2,
+				"filter":     query.Filter,
+				"attributes": query.Attributes,
+				"scope":      query.Scope,
+				"base":       query.Base,
 			}).Error("unable to search LDAP")
 
 			APIResponse.Message = "unable to search LDAP"
