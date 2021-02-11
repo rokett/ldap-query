@@ -45,6 +45,8 @@ The `filter`, `base`, and `attributes` parameters are **required**.  The `scope`
 
 No validation is carried out on the filter or attribute names, so if you don't get the results you expect make sure you check that they are correct.
 
+:warning: If the object you are searching for has brackets in the name, either `(` or `)`, you will need to escape the filter.  So a filter like `(&(cn=my group (admins),dc=xxx,dc=xxx,dc=xxx)(objectCategory=group))` needs to be like this -> `(&(cn=my group \\28admins\\29,dc=xxx,dc=xxx,dc=xxx)(objectCategory=group))`.
+
 To display the application version run the application with the `--version` flag.
 
 ### Metrics
