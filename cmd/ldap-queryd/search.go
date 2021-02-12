@@ -178,7 +178,9 @@ func search(directory directory, logger *logrus.Entry) http.HandlerFunc {
 			nil,
 		)
 
-		res, err := ldapConn.Search(searchRequest)
+		var pageSize uint32
+		pageSize = 10000
+		res, err := ldapConn.SearchWithPaging(searchRequest, pageSize)
 		if err != nil {
 			err2 := err
 			// Let's ensure we return a friendly error message if available
