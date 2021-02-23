@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -75,7 +75,7 @@ func search(directory directory, logger *logrus.Entry) http.HandlerFunc {
 
 		start := time.Now()
 
-		body, err := ioutil.ReadAll(r.Body)
+		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			queryError.WithLabelValues("decode", strconv.Itoa(http.StatusInternalServerError), clientIP).Inc()
 
