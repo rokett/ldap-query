@@ -23,14 +23,16 @@ var (
 	build         string
 	directoryPort = 389
 
-	versionFlg          = flag.Bool("version", false, "Display application version")
-	portFlg             = flag.Int("port", 9999, "Port to listen for requests on")
-	debugFlg            = flag.Bool("debug", false, "Enable debug logging")
-	allowedSourcesFlg   = flag.String("allowed_sources", "", "IPs for sources that need to be able to make queries")
-	directoryHostsFlg   = flag.String("directory_hosts", "", "LDAP hosts to query")
-	directoryBindDnFlg  = flag.String("directory_bind_dn", "", "DN of account used to bind to the directory")
-	directoryBindPwdFlg = flag.String("directory_bind_pw", "", "Password for account used to bind to the directory")
-	helpFlg             = flag.Bool("help", false, "Display application help")
+	versionFlg            = flag.Bool("version", false, "Display application version")
+	portFlg               = flag.Int("port", 9999, "Port to listen for requests on")
+	debugFlg              = flag.Bool("debug", false, "Enable debug logging")
+	allowedSourcesFlg     = flag.String("allowed_sources", "", "IPs for sources that need to be able to make queries")
+	directoryHostsFlg     = flag.String("directory_hosts", "", "LDAP hosts to query")
+	directoryBindDnFlg    = flag.String("directory_bind_dn", "", "DN of account used to bind to the directory")
+	directoryBindPwdFlg   = flag.String("directory_bind_pw", "", "Password for account used to bind to the directory")
+	corsAllowedOriginsFlg = flag.String("cors-allowed-origins", "", "Allowed origins for CORS purposes")
+	corsAllowedHeadersFlg = flag.String("cors-allowed-headers", "*", "Allowed headers for CORS purposes")
+	helpFlg               = flag.Bool("help", false, "Display application help")
 )
 
 func main() {
@@ -91,7 +93,18 @@ func main() {
 		os.Exit(1)
 	}
 
-	config := parseConfig(logger, *allowedSourcesFlg, *portFlg, *debugFlg, *directoryHostsFlg, *directoryBindDnFlg, *directoryBindPwdFlg, directoryPort)
+	config := parseConfig(
+		logger,
+		*allowedSourcesFlg,
+		*portFlg,
+		*debugFlg,
+		*directoryHostsFlg,
+		*directoryBindDnFlg,
+		*directoryBindPwdFlg,
+		directoryPort,
+		*corsAllowedOriginsFlg,
+		*corsAllowedHeadersFlg,
+	)
 
 	if config.Server.Debug {
 		logger.Level = logrus.DebugLevel
@@ -133,9 +146,25 @@ func main() {
 	mux.Handle("/", middlewareChain.ThenFunc(search(config.Directory, logger)))
 	mux.Handle("/metrics", promhttp.Handler())
 
+	var handler http.Handler
+
+	if len(config.Server.CorsAllowedOrigins) > 0 {
+		opts := cors.Options{
+			AllowedOrigins: config.Server.CorsAllowedOrigins,
+			AllowedMethods: []string{"GET", "POST", "OPTIONS"},
+			AllowedHeaders: config.Server.CorsAllowedHeaders,
+		}
+
+		co := cors.New(opts)
+
+		handler = co.Handler(mux)
+	} else {
+		handler = http.Handler(mux)
+	}
+
 	logger.WithField("port", listeningPort).Debug("API server listening")
 
-	err = http.Serve(server, mux)
+	err = http.Serve(server, handler)
 	if err != nil {
 		logger.WithField("error", err).Fatal("unable to start server")
 	}

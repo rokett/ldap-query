@@ -11,6 +11,7 @@ import (
 	"github.com/justinas/alice"
 	"github.com/kardianos/service"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/rs/cors"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sys/windows/svc/eventlog"
 )
@@ -27,15 +28,17 @@ var (
 	serviceDesc   = "REST API gateway for running queries against LDAP directory"
 	directoryPort = 389
 
-	versionFlg          = flag.Bool("version", false, "Display application version")
-	winServiceCommand   = flag.String("service", "", "Manage Windows services: install, uninstall, start, stop")
-	portFlg             = flag.Int("port", 9999, "Port to listen for requests on")
-	debugFlg            = flag.Bool("debug", false, "Enable debug logging")
-	allowedSourcesFlg   = flag.String("allowed_sources", "", "IPs for sources that need to be able to make queries")
-	directoryHostsFlg   = flag.String("directory_hosts", "", "LDAP hosts to query")
-	directoryBindDnFlg  = flag.String("directory_bind_dn", "", "DN of account used to bind to the directory")
-	directoryBindPwdFlg = flag.String("directory_bind_pw", "", "Password for account used to bind to the directory")
-	helpFlg             = flag.Bool("help", false, "Display application help")
+	versionFlg            = flag.Bool("version", false, "Display application version")
+	winServiceCommand     = flag.String("service", "", "Manage Windows services: install, uninstall, start, stop")
+	portFlg               = flag.Int("port", 9999, "Port to listen for requests on")
+	debugFlg              = flag.Bool("debug", false, "Enable debug logging")
+	allowedSourcesFlg     = flag.String("allowed_sources", "", "IPs for sources that need to be able to make queries")
+	directoryHostsFlg     = flag.String("directory_hosts", "", "LDAP hosts to query")
+	directoryBindDnFlg    = flag.String("directory_bind_dn", "", "DN of account used to bind to the directory")
+	directoryBindPwdFlg   = flag.String("directory_bind_pw", "", "Password for account used to bind to the directory")
+	corsAllowedOriginsFlg = flag.String("cors-allowed-origins", "", "Allowed origins for CORS purposes")
+	corsAllowedHeadersFlg = flag.String("cors-allowed-headers", "*", "Allowed headers for CORS purposes")
+	helpFlg               = flag.Bool("help", false, "Display application help")
 )
 
 type program struct {
@@ -195,7 +198,18 @@ func (p *program) run(svc service.Service) {
 		os.Exit(1)
 	}
 
-	config := parseConfig(p.logger, *allowedSourcesFlg, *portFlg, *debugFlg, *directoryHostsFlg, *directoryBindDnFlg, *directoryBindPwdFlg, directoryPort)
+	config := parseConfig(
+		p.logger,
+		*allowedSourcesFlg,
+		*portFlg,
+		*debugFlg,
+		*directoryHostsFlg,
+		*directoryBindDnFlg,
+		*directoryBindPwdFlg,
+		directoryPort,
+		*corsAllowedOriginsFlg,
+		*corsAllowedHeadersFlg,
+	)
 
 	if config.Server.Debug {
 		p.logger.Logger.Level = logrus.DebugLevel
@@ -237,12 +251,28 @@ func (p *program) run(svc service.Service) {
 	mux.Handle("/", middlewareChain.ThenFunc(search(config.Directory, p.logger)))
 	mux.Handle("/metrics", promhttp.Handler())
 
+	var handler http.Handler
+
+	if len(config.Server.CorsAllowedOrigins) > 0 {
+		opts := cors.Options{
+			AllowedOrigins: config.Server.CorsAllowedOrigins,
+			AllowedMethods: []string{"GET", "POST", "OPTIONS"},
+			AllowedHeaders: config.Server.CorsAllowedHeaders,
+		}
+
+		co := cors.New(opts)
+
+		handler = co.Handler(mux)
+	} else {
+		handler = http.Handler(mux)
+	}
+
 	p.logger.WithFields(logrus.Fields{
 		"function": "run",
 		"port":     listeningPort,
 	}).Debug("API server listening")
 
-	err = http.Serve(server, mux)
+	err = http.Serve(server, handler)
 	if err != nil {
 		p.logger.WithFields(logrus.Fields{
 			"function": "run",
