@@ -49,7 +49,7 @@ func (q *Query) Validate() ([]ValidationError, error) {
 		})
 	}
 
-	if q.Base != "" && regexp.MustCompile(regexBase).MatchString(q.Base) != true {
+	if q.Base != "" && !regexp.MustCompile(regexBase).MatchString(q.Base) {
 		ve = append(ve, ValidationError{
 			Parameter: "base",
 			Error:     "base does not appear to be a valid LDAP path",
@@ -64,7 +64,7 @@ func (q *Query) Validate() ([]ValidationError, error) {
 	}
 
 	// OPTIONAL parameter validation
-	if regexp.MustCompile(regexScope).MatchString(q.Scope) != true {
+	if !regexp.MustCompile(regexScope).MatchString(q.Scope) {
 		ve = append(ve, ValidationError{
 			Parameter: "scope",
 			Error:     "If specified, scope MUST be one of 'base', 'one', or 'sub'",

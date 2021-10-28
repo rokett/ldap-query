@@ -120,7 +120,7 @@ func (p *program) Start(s service.Service) error {
 
 func (p *program) run(svc service.Service) {
 	// If the application is NOT running interactively, then it is running as a service and we want to send logs to the Event Log.
-	if service.Interactive() == false {
+	if !service.Interactive() {
 		var el *eventlog.Log
 
 		el, err := eventlog.Open(app)

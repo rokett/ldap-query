@@ -9,6 +9,7 @@ import (
 
 	"github.com/justinas/alice"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/rs/cors"
 	"github.com/sirupsen/logrus"
 )
 
