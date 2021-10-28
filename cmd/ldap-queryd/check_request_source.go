@@ -20,7 +20,7 @@ func checkRequestSource(allowedSources []string, logger *logrus.Entry) alice.Con
 				}
 			}
 
-			if allowed == false {
+			if !allowed {
 				msg := fmt.Sprintf("%s is not allowed to query; check the config", r.Context().Value(clientIPCtxKey))
 				APIResponse := Response{
 					Message: msg,
