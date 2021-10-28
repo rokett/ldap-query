@@ -1,6 +1,6 @@
 FROM golang:alpine as builder
 
-ENV VERSION="1.1.0"
+ENV VERSION="1.2.0"
 
 WORKDIR $GOPATH/src/github.com/rokett
 RUN \
@@ -15,7 +15,5 @@ LABEL maintainer="rokett@rokett.me"
 COPY --from=builder /go/src/github.com/rokett/ldap-query/cmd/ldap-queryd/ldap-query /
 
 EXPOSE 9999
-
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:9999/status || exit 1
 
 ENTRYPOINT ["/ldap-query"]
