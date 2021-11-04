@@ -223,6 +223,11 @@ func search(directory directory, logger *logrus.Entry) http.HandlerFunc {
 					continue
 				}
 
+				if strings.ToLower(a) == "memberof" {
+					object.Attributes[a] = strings.Join(entry.GetAttributeValues(a), "|")
+					continue
+				}
+
 				object.Attributes[a] = entry.GetAttributeValue(a)
 			}
 
